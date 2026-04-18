@@ -1,1 +1,33 @@
-<script type="module" src="../js/script.js"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bakery On Demand</title>
+    <link rel="stylesheet" href="../css/style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Bakery On Demand</h1>
+      <p>Enter ingredients you have and get a random baking treat</p>
+    </header>
+    <main>
+      <section class="input-section">
+        <h2>Your Ingredients</h2>
+        <input
+          type="text"
+          id="ingredientInput"
+          placeholder="e.g. flour, sugar, eggs"
+        />
+        <button id="generateButton">Find a Recipe</button>
+      </section>
+      <section class="results-section">
+        <h2>Suggested Recipe</h2>
+        <div id="recipeCard">
+          <p>No recipe yet. Add ingredients to start baking.</p>
+        </div>
+      </section>
+    </main>
+    <script type="module" src="../js/script.js"></script>
+  </body>
+</html>
