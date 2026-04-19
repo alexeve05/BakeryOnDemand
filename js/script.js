@@ -8,7 +8,7 @@ let ingredients = [];
 
 generateButton.addEventListener("click", async () => {
     if(ingredients.length === 0){
-        recipeCard.innerHMTL = "<p>Add some ingredients first</p>";
+        recipeCard.innerHTML = "<p>Add some ingredients first</p>";
         return;
     }
     recipeCard.innerHTML = "<p>Searching bakery...</p>";
@@ -22,7 +22,7 @@ generateButton.addEventListener("click", async () => {
 async function getRecipe(ingredients){
     const query = ingredients.join(",");
     const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&number=10&apiKey=${API_KEY}`;
-    const repsonse = await fetch(url);
+    const response = await fetch(url);
     const data = await response.json();
     if(!data || data.length === 0){
         return null;
