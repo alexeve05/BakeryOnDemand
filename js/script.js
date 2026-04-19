@@ -4,8 +4,15 @@ const generateButton = document.getElementById("generateButton");
 const recipeCard = document.getElementById("recipeCard");
 const ingredientList = document.getElementById("ingredientList");
 const addIngredientButton = document.getElementById("addIngredientButton");
+const vinylButton = document.getElementById("vinylButton");
+const bgMusic = document.getElementById("bgMusic");
+let isPlaying = false;
 let ingredients = [];
-
+ingredientInput.addEventListener("keypress", (e) => {
+    if(e.key === "Enter"){
+        addIngredientButton.click();
+    }
+});
 generateButton.addEventListener("click", async () => {
     if(ingredients.length === 0){
         recipeCard.innerHTML = "<p>Add some ingredients first</p>";
@@ -59,3 +66,13 @@ function renderIngredients(){
         ingredientList.appendChild(li);
     });
 }
+vinylButton.addEventListener("click", () => {
+    if(!isPlaying){
+        bgMusic.play();
+        vinylButton.classList.add("spin");
+    } else {
+        bgMusic.pause();
+        vinylButton.classList.remove("spin");
+    }
+    isPlaying = !isPlaying;
+});
