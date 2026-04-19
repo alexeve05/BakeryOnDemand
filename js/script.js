@@ -2,31 +2,28 @@ import { API_KEY } from "./config.js";
 const ingredientInput = document.getElementById("ingredientInput");
 const generateButton = document.getElementById("generateButton");
 const recipeCard = document.getElementById("recipeCard");
+const ingredientList = document.getElementById("ingredientList");
+const addIngredientButton = document.getElementById("addIngredientButton");
+let ingredients = [];
 
 generateButton.addEventListener("click", async () => {
-    const rawInput = ingredientInput.ariaValueMax;
-    if(!rawInput){
-        recipeCard.innerHTML = "<p>Please enter some ingredients first</p>";
+    if(ingredients.length === 0){
+        recipeCard.innerHMTL = "<p>Add some ingredients first</p>";
         return;
     }
-    const ingredients = rawInput .split(",") .map(item => item.trim()) .filter(item => item !== "");
-    recipeCard.innerHTML = "<p>Searching through bakery...</p>";
-    try{
-        const recipe = await getRecipe(ingredients);
-        if(!recipe){
-            recipeCard.innerHTML = "<p>No matching recipes found.</p>";
-        }
-        displayRecipe(recipe);
-    } catch(error){
-        console.error(error);
-        recipeCard.innerHTML = "<p>Something went wrong fetching recipes.</p>";
+    recipeCard.innerHTML = "<p>Searching bakery...</p>";
+    const recipe = await getRecipe(ingredients);
+    if(!recipe){
+        recipeCard.innerHTML = "<p>No recipes found...</p>";
+        return;
     }
+    displayRecipe(recipe);
 });
 async function getRecipe(ingredients){
     const query = ingredients.join(",");
     const url = `https://api.spoonacular.com/recipes/findByIngredients?ingredients=${query}&number=10&apiKey=${API_KEY}`;
     const repsonse = await fetch(url);
-    const data = await Response.json();
+    const data = await response.json();
     if(!data || data.length === 0){
         return null;
     }
@@ -37,4 +34,28 @@ function displayRecipe(recipe){
     recipeCard.innerHTML = `<h3>${recipe.title}</h3>
     <img src="${recipe.image}" alt="${recipe.title}" style="width:200px; border-radius:10px;"/>
     <p>Random bakery pick (based on your ingredients!)</p>`;
+}
+addIngredientButton.addEventListener("click", () => {
+    const value = ingredientInput.value.trim();
+    if(!value){
+        return;
+    }
+    ingredients.push(value);
+    ingredientInput.value = "";
+    renderIngredients();
+});
+function renderIngredients(){
+    ingredientList.innerHTML = "";
+    ingredients.forEach((item, index) => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        const removeButton = document.createElement("button");
+        removeButton.textContent = "X";
+        removeButton.addEventListener("click", () => {
+            ingredients.splice(index, 1);
+            renderIngredients();
+        });
+        li.appendChild(removeButton);
+        ingredientList.appendChild(li);
+    });
 }
